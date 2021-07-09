@@ -54,7 +54,7 @@ namespace TicTacToeClasses
     public class AI : Player
     {
         private static readonly Pathway[] m_InnerPaths = { new Pathway(4, 0, 8), new Pathway(4, 2, 6), new Pathway(4, 1, 7), new Pathway(4, 3, 5) };
-        private static readonly Pathway[] m_OuterPaths = { new Pathway(0, 2, 1), new Pathway(0, 6, 3), new Pathway(2, 8, 5), new Pathway(6, 8, 7) };
+        private static readonly Pathway[] m_OuterPaths = { new Pathway(0, 2, 1), new Pathway(0, 6, 3), new Pathway(8, 6, 7), new Pathway(8, 2, 5) };
         private static readonly int[] m_BestMoves = { 4, 0, 2, 6, 8, 1, 3, 5, 7 };
         public AI(char symbol) : base(symbol) { }
 
@@ -188,6 +188,7 @@ namespace TicTacToeClasses
             bool foundWin;
             int WinningPosition;
             int numOwned;
+            int endAt;
             if (!checkOpponent)
             {
                 for (int pathNum = 0; pathNum < m_OuterPaths.Length; pathNum++)
@@ -196,7 +197,8 @@ namespace TicTacToeClasses
                     WinningPosition = -1;
                     numOwned = 0;
                     Pathway pathway = m_OuterPaths[pathNum];
-                    for (int nodeNum = 0; nodeNum < pathway.GetNodePositions().Length; nodeNum++)
+                    endAt = pathway.GetNodePositions().Length;
+                    for (int nodeNum = 0; nodeNum < endAt; nodeNum++)
                     {
                         int Position = pathway.GetNodePositions()[nodeNum];
                         if (board.m_Nodes[Position].GetSymbol() == board.m_Empty)
@@ -205,6 +207,7 @@ namespace TicTacToeClasses
                         }
                         else if (board.m_Nodes[Position].GetSymbol() == this.GetSymbol())
                         {
+                            //increments the numOwned when the player's symbol is found
                             numOwned++;
                             if (numOwned > 1)
                             {
@@ -213,6 +216,25 @@ namespace TicTacToeClasses
                         }
                         else
                         {
+                            //Checks the 1st and 3rd pathways.
+                            if (pathNum % 2 == 0)
+                            {
+                                //Skips the 2nd and 4th pathways.
+                                if (nodeNum == 0)
+                                {
+                                    pathNum++;
+                                }
+                                //prevents last node from being checked
+                                else if (pathNum == 0 && pathNum == nodeNum)
+                                {
+                                    endAt--;
+                                }
+                            }
+                            //skips the 3rd pathway
+                            else if (nodeNum == 1)
+                            {
+                                pathNum++;
+                            }
                             break;
                         }
                         if (WinningPosition != -1 && foundWin == true)
@@ -230,7 +252,8 @@ namespace TicTacToeClasses
                     WinningPosition = -1;
                     numOwned = 0;
                     Pathway pathway = m_OuterPaths[pathNum];
-                    for (int nodeNum = 0; nodeNum < pathway.GetNodePositions().Length; nodeNum++)
+                    endAt = pathway.GetNodePositions().Length;
+                    for (int nodeNum = 0; nodeNum < endAt; nodeNum++)
                     {
                         int Position = pathway.GetNodePositions()[nodeNum];
                         if (board.m_Nodes[Position].GetSymbol() == board.m_Empty)
@@ -247,6 +270,25 @@ namespace TicTacToeClasses
                         }
                         else
                         {
+                            //Checks the 1st and 3rd pathways.
+                            if (pathNum % 2 == 0)
+                            {
+                                //Skips the 2nd and 4th pathways.
+                                if (nodeNum == 0)
+                                {
+                                    pathNum++;
+                                }
+                                //prevents last node from being checked
+                                else if (pathNum == 0 && pathNum == nodeNum)
+                                {
+                                    endAt--;
+                                }
+                            }
+                            //skips the 3rd pathway
+                            else if (nodeNum == 1)
+                            {
+                                pathNum++;
+                            }
                             break;
                         }
                         if (WinningPosition != -1 && foundWin == true)
