@@ -27,12 +27,7 @@ namespace TicTacToe
                 bool GameOver = false;
                 while (!GameOver)
                 {
-                    int lastMove;
-                    if (currentGame.m_TurnNumber == 4 && currentGame.m_CurrentPlayer.GetType() == typeof(AI))
-                    {
-                        
-                    }
-                    lastMove = GameController.GetPlayerMove(currentGame, board);
+                    int lastMove = GameController.GetPlayerMove(currentGame, board);
                     GameController.UpdateBoard(lastMove, board.m_Nodes);
                     GameOver = GameController.CheckGameOver(currentGame.m_TurnNumber, board);
                     Thread.Sleep(1000);

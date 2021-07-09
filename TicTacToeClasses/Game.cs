@@ -4,8 +4,7 @@ namespace TicTacToeClasses
 {
     public class Node
     {
-        private int m_X;
-        private int m_Y;
+        private int m_X, m_Y;
         private char m_Symbol;
 
         //Getters
@@ -48,51 +47,10 @@ namespace TicTacToeClasses
         {
             return (GetY() * 3) + GetX() + 1;
         }
-
-        public virtual string[] ParsePosition()
-        {
-            string row;
-            //parses the row
-            if (GetY() == 0)
-            {
-                row = "Top";
-            }
-            else if (GetY() == 1)
-            {
-                row = "Mid";
-            }
-            else
-            {
-                row = "Bottom";
-            }
-
-            string col;
-            //parses the column
-            if (GetX() == 0)
-            {
-                col = "Left";
-            }
-            else if (GetX() == 1)
-            {
-                col = "Mid";
-            }
-            else
-            {
-                col = "Right";
-            }
-            string[] position = { row, col };
-            return position;
-        }
-
     }
     public class CenterNode : Node
     {
         public CenterNode(int X, int Y, char symbol = ' ') : base(X, Y, symbol) { }
-        public override string[] ParsePosition()
-        {
-            string[] position = { "Center" };
-            return position;
-        }
     }
     public class CornerNode : Node
     {
@@ -156,8 +114,7 @@ namespace TicTacToeClasses
         public static Player[] SelectPlayers(Player p1, Player p2)
         {
             //Validates Player 1's symbol
-            string p1Symbol;
-            string p2Symbol;
+            string p1Symbol, p2Symbol;
             bool validSymbol = true;
             if (p1.GetSymbol().ToString().Trim().Length != 1)
             {
@@ -278,7 +235,7 @@ namespace TicTacToeClasses
         {
             int lastMove;
             Player player = game.m_CurrentPlayer;
-            if (game.m_TurnNumber == 3 && player.GetType() == typeof(AI))
+            if (game.m_TurnNumber == 3)
             {
                 lastMove = player.EdgeCaseTakeTurn(board);
             }

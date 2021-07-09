@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TicTacToeClasses
 {
-    public class Player
+    public abstract class Player
     {
         private char m_Symbol;
 
@@ -21,13 +21,18 @@ namespace TicTacToeClasses
             SetSymbol(symbol);
         }
 
-        public virtual int EdgeCaseTakeTurn(GameBoard board)
-        {
-            //This method is required to allow the overiding function to be called.
-            return -1;
-        }
+        public abstract int EdgeCaseTakeTurn(GameBoard board);
+        public abstract int TakeTurn(GameBoard board);
+    }
 
-        public virtual int TakeTurn(GameBoard board)
+    public class Human : Player
+    {
+        public Human(char symbol) : base(symbol) { }
+        public override int EdgeCaseTakeTurn(GameBoard board)
+        {
+            return TakeTurn(board);
+        }
+        public override int TakeTurn(GameBoard board)
         {
             int position;
             while (true)
@@ -51,11 +56,6 @@ namespace TicTacToeClasses
                 }
             }
         }
-    }
-
-    public class Human : Player
-    {
-        public Human(char symbol) : base(symbol) { }
     }
 
     public class AI : Player
@@ -351,5 +351,4 @@ namespace TicTacToeClasses
             SetNodePositions(first, second, third);
         }
     }
-
 }
