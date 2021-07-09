@@ -276,7 +276,16 @@ namespace TicTacToeClasses
 
         public static int GetPlayerMove(GameState game, GameBoard board)
         {
-            int lastMove = game.m_CurrentPlayer.TakeTurn(board);
+            int lastMove;
+            Player player = game.m_CurrentPlayer;
+            if (game.m_TurnNumber == 3 && player.GetType() == typeof(AI))
+            {
+                lastMove = player.EdgeCaseTakeTurn(board);
+            }
+            else
+            {
+                lastMove = player.TakeTurn(board);
+            }
             game.m_TurnNumber++;
             return lastMove;
         }

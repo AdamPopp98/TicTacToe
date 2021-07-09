@@ -20,6 +20,13 @@ namespace TicTacToeClasses
         {
             SetSymbol(symbol);
         }
+
+        public virtual int EdgeCaseTakeTurn(GameBoard board)
+        {
+            //This method is required to allow the overiding function to be called.
+            return -1;
+        }
+
         public virtual int TakeTurn(GameBoard board)
         {
             int position;
@@ -64,6 +71,19 @@ namespace TicTacToeClasses
             board.m_Nodes[position].SetSymbol(GetSymbol());
             return position;
         }
+
+        public override int EdgeCaseTakeTurn(GameBoard board)
+        {
+            if (board.m_Nodes[5].GetSymbol() != GetSymbol() && board.m_Nodes[5].GetSymbol() != board.m_Empty)
+            {
+                if (board.m_Nodes[7].GetSymbol() != GetSymbol() && board.m_Nodes[7].GetSymbol() != board.m_Empty)
+                {
+                    board.m_Nodes[8].SetSymbol(GetSymbol());
+                    return 8;
+                }
+            }
+            return TakeTurn(board);
+        }
         private async Task<int> CalcBestMove(GameBoard board)
         {
             List<Task<int>> tasks = new List<Task<int>>();
@@ -99,7 +119,6 @@ namespace TicTacToeClasses
             }
             return innerCheck;
         }
-
         private int CheckInnerPaths(GameBoard board, bool checkOpponent = false)
         {
             bool foundWin;
