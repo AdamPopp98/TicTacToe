@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace TicTacToeClasses
 {
+    /// <summary>
+    /// Base Player class
+    /// </summary>
     public abstract class Player
     {
         private char m_Symbol;
@@ -25,6 +28,10 @@ namespace TicTacToeClasses
         public abstract int TakeTurn(GameBoard board);
     }
 
+
+    /// <summary>
+    /// Implements the Player class for a Human Player
+    /// </summary>
     public class Human : Player
     {
         public Human(char symbol) : base(symbol) { }
@@ -58,6 +65,9 @@ namespace TicTacToeClasses
         }
     }
 
+    /// <summary>
+    /// Implements the player class for an AI Player
+    /// </summary>
     public class AI : Player
     {
         private static readonly Pathway[] m_InnerPaths = { new Pathway(4, 0, 8), new Pathway(4, 2, 6), new Pathway(4, 1, 7), new Pathway(4, 3, 5) };
@@ -72,6 +82,11 @@ namespace TicTacToeClasses
             return position;
         }
 
+        /// <summary>
+        /// Handles edge cases that can occur on the fourth turn
+        /// </summary>
+        /// <param name="board"></param>
+        /// <returns></returns>
         public override int EdgeCaseTakeTurn(GameBoard board)
         {
             if (board.m_Nodes[5].GetSymbol() != GetSymbol() && board.m_Nodes[5].GetSymbol() != board.m_Empty)
@@ -82,8 +97,25 @@ namespace TicTacToeClasses
                     return 8;
                 }
             }
+            else if (board.m_Nodes[0].GetSymbol() != GetSymbol() && board.m_Nodes[0].GetSymbol() != board.m_Empty)
+            {
+                if (board.m_Nodes[8].GetSymbol() != GetSymbol() && board.m_Nodes[8].GetSymbol() != board.m_Empty)
+                {
+                    board.m_Nodes[1].SetSymbol(GetSymbol());
+                    return 1;
+                }
+            }
+            else if (board.m_Nodes[2].GetSymbol() != GetSymbol() && board.m_Nodes[2].GetSymbol() != board.m_Empty)
+            {
+                if (board.m_Nodes[6].GetSymbol() != GetSymbol() && board.m_Nodes[6].GetSymbol() != board.m_Empty)
+                {
+                    board.m_Nodes[1].SetSymbol(GetSymbol());
+                    return 1;
+                }
+            }
             return TakeTurn(board);
         }
+
         private async Task<int> CalcBestMove(GameBoard board)
         {
             List<Task<int>> tasks = new List<Task<int>>();
@@ -329,26 +361,6 @@ namespace TicTacToeClasses
                 }
             }
             return -1;
-        }
-    }
-    public class Pathway
-    {
-        private int[] m_NodePositions;
-        public int[] GetNodePositions()
-        {
-            return m_NodePositions;
-        }
-        public void SetNodePositions(int[] positions)
-        {
-            m_NodePositions = positions;
-        }
-        public void SetNodePositions(int first, int second, int third)
-        {
-            m_NodePositions = new int[] { first, second, third };
-        }
-        public Pathway(int first, int second, int third)
-        {
-            SetNodePositions(first, second, third);
         }
     }
 }

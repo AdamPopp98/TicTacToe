@@ -2,6 +2,9 @@
 
 namespace TicTacToeClasses
 {
+    /// <summary>
+    /// Class used to make up Game Board
+    /// </summary>
     public class Node
     {
         private int m_X, m_Y;
@@ -60,6 +63,10 @@ namespace TicTacToeClasses
     {
         public SideNode(int X, int Y, char symbol = ' ') : base(X, Y, symbol) { }
     }
+
+    /// <summary>
+    /// Contains gameboard and can be displayed.
+    /// </summary>
     public class GameBoard
     {
         public char m_Empty;
@@ -93,6 +100,9 @@ namespace TicTacToeClasses
         }
     }
 
+    /// <summary>
+    /// Contains relevant game information.
+    /// </summary>
     public class GameState
     {
         public Player[] m_Players { get; set; }
@@ -107,8 +117,29 @@ namespace TicTacToeClasses
             m_Players = players;
             m_TurnNumber = 0;
         }
+
+        /// <summary>
+        /// Resets game when game ends.
+        /// </summary>
+        public void ResetGame()
+        {
+            m_TurnNumber = 0;
+            m_Players = ReversePlayers();
+        }
+
+        /// <summary>
+        /// Reverses the player list at the end of the game
+        /// </summary>
+        /// <returns></returns>
+        private Player[] ReversePlayers()
+        {
+            return new Player[] { m_Players[1], m_Players[0] };
+        }
     }
 
+    /// <summary>
+    /// Static class handles game operations
+    /// </summary>
     public static class GameController
     {
         public static Player[] SelectPlayers(Player p1, Player p2)
@@ -186,7 +217,7 @@ namespace TicTacToeClasses
             }
             return new Player[] { p1, p2 };
         }
-        public static void CreateBoard(Node[] nodes)
+        public static string CreateBoard()
         {
             string horizontal, vertical, grid;
             horizontal = " #################\n";
@@ -195,6 +226,7 @@ namespace TicTacToeClasses
                     vertical + vertical + vertical + horizontal +
                     vertical + vertical + vertical);
             Console.WriteLine(grid);
+            return grid;
         }
 
         public static void UpdateBoard(int lastPlayedPosition, Node[] nodes)

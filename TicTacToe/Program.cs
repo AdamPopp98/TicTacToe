@@ -11,17 +11,17 @@ namespace TicTacToe
             //Main Variables
             GameState currentGame;
             Player[] players = new Player[2];
-            Player p1 = new AI('X');
+            Player p1 = new Human('X');
             Player p2 = new AI('O');
 
-            //Program Loop;
+            //Program Loop
             int GameNumber = 0;
+            currentGame = new GameState(GameController.SelectPlayers(p1, p2));
             while (GameNumber < 20)
             {
                 //Game Setup
-                currentGame = new GameState(GameController.SelectPlayers(p1, p2));
                 GameBoard board = new GameBoard();
-                GameController.CreateBoard(board.m_Nodes);
+                GameController.CreateBoard();
 
                 //Gameplay loop
                 bool GameOver = false;
@@ -34,6 +34,7 @@ namespace TicTacToe
                 }
                 Console.Clear();
                 GameNumber++;
+                currentGame.ResetGame();
             }
         }
     }
